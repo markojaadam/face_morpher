@@ -15,16 +15,12 @@ class OverrideInstall(install):
         os.chmod(filepath, 0o755)
 
 setup(
-  name='facemorpher',
-  version='3.3.3',
-  author='Alyssa Quek',
-  author_email='alyssaquek@gmail.com',
+  name='facemorpher_memlab',
+  version='0.1.0',
   description=('Warp, morph and average human faces!'),
   keywords='face morphing, averaging, warping',
-  url='https://github.com/alyssaq/face_morpher',
-  license='MIT',
   packages=find_packages(),
-  package_data={'facemorpher': [
+  package_data={'facemorpher_memlab': [
     'data/*.xml',
     'bin/stasm_util_osx_cv3.2',
     'bin/stasm_util_osx_cv3.4',
@@ -40,8 +36,8 @@ setup(
   ],
   cmdclass={'install': OverrideInstall},
   entry_points={'console_scripts': [
-      'facemorpher=facemorpher.morpher:main',
-      'faceaverager=facemorpher.averager:main'
+      'facemorpher=facemorpher_memlab.morpher:main',
+      'faceaverager=facemorpher_memlab.averager:main'
     ]
   },
   data_files=[('readme', ['README.rst'])],
