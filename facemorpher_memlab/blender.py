@@ -118,13 +118,9 @@ def poisson_blend(img_source, dest_img, img_mask, offset=(0, 0)):
 
 
 def add_background(background_img, overlay_t_img):
-  # Resize the canvas of overlay image
-  bg_h, bg_w = background_img.shape[:2]
-  pic_h, pic_w = overlay_t_img.shape[:2]
-  overlay_t_img = cv2.copyMakeBorder(overlay_t_img,
-                                     (bg_h - pic_h) / 2, (bg_h - pic_h) / 2, (bg_w - pic_w) / 2, (bg_w - pic_w) / 2,
-                                     cv2.BORDER_CONSTANT)
-
+  # Resize the background to fit to the image
+  h, w = overlay_t_img.shape[:2]
+  background_img = cv2.resize(background_img, (w, h))
   # Split out the transparency mask from the colour info
   overlay_img = overlay_t_img[:, :, :3]  # Grab the BRG planes
   overlay_mask = overlay_t_img[:, :, 3:]  # And the alpha plane
