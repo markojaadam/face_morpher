@@ -9,7 +9,7 @@
               [--width=<width>] [--height=<height>]
               [--num=<num_frames>] [--fps=<frames_per_second>]
               [--out_frames=<folder>] [--out_video=<filename>]
-              [--alpha] [--blur_edges] [--plot]
+              [--alpha] [--blur] [--plot]
 
   Options:
     -h, --help              Show this screen.
@@ -23,6 +23,7 @@
     --out_frames=<folder>   Folder path to save all image frames
     --out_video=<filename>  Filename to save a video
     --alpha                 Flag to save transparent background [default: False]
+    --blur                 Flag to blur edges of image [default: False]
     --plot                  Flag to plot images [default: False]
     --version               Show version.
 """
@@ -146,7 +147,7 @@ def main():
           int(args['--width']), int(args['--height']),
           int(args['--num']), int(args['--fps']),
           args['--out_frames'], args['--out_video'],
-          args['--alpha'], args['--blur_edges'], args['--plot'])
+          args['--alpha'], args['--blur'], args['--plot'])
 
 if __name__ == "__main__":
   main()
