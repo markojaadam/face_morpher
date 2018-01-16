@@ -33,12 +33,12 @@ import numpy as np
 import os
 import cv2
 
-from facemorpher import locator
-from facemorpher import aligner
-from facemorpher import warper
-from facemorpher import blender
-from facemorpher import plotter
-from facemorpher import videoer
+from facemorpher_memlab import locator
+from facemorpher_memlab import aligner
+from facemorpher_memlab import warper
+from facemorpher_memlab import blender
+from facemorpher_memlab import plotter
+from facemorpher_memlab import videoer
 
 def verify_args(args):
   if args['--images'] is None:

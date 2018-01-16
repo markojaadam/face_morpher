@@ -6,7 +6,7 @@ from builtins import range
 import cv2
 import numpy as np
 
-from facemorpher import cvver
+from facemorpher_memlab import cvver
 
 def check_write_video(func):
   def inner(self, *args, **kwargs):

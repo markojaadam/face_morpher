@@ -8,7 +8,7 @@ import subprocess
 import sys
 import os.path as path
 
-from facemorpher import cvver
+from facemorpher_memlab import cvver
 
 # Stasm util binary in `bin` folder available for these platforms
 SUPPORTED_PLATFORMS = {
