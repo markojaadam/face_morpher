@@ -9,7 +9,7 @@
               [--width=<width>] [--height=<height>]
               [--num=<num_frames>] [--fps=<frames_per_second>]
               [--out_frames=<folder>] [--out_video=<filename>]
-              [--alpha] [--plot]
+              [--alpha] [--blur_edges] [--plot]
 
   Options:
     -h, --help              Show this screen.
@@ -30,6 +30,7 @@ from docopt import docopt
 import scipy.ndimage
 import numpy as np
 import os
+import cv2
 
 from facemorpher import locator
 from facemorpher import aligner
@@ -52,7 +53,6 @@ def verify_args(args):
       exit(1)
 
 def load_image_points(path, size):
-  img = scipy.ndimage.imread(path)[..., :3]
   points = locator.face_points(path)
 
   if len(points) == 0:
@@ -79,13 +79,16 @@ def list_imgpaths(images_folder=None, src_image=None, dest_image=None):
          fname.lower().endswith('.jpeg')):
         yield os.path.join(images_folder, fname)
 
-def alpha_image(img, points):
+def alpha_image(blur_edges, img, points):
   mask = blender.mask_from_points(img.shape[:2], points)
+  if blur_edges:
+    blur_radius = 10
+    mask = cv2.blur(mask, (blur_radius, blur_radius))
   return np.dstack((img, mask))
 
 def morph(src_img, src_points, dest_img, dest_points,
           video, width=500, height=600, num_frames=20, fps=10,
-          out_frames=None, out_video=None, alpha=False, plot=False):
+          out_frames=None, out_video=None, alpha=False, blur_edges=False, plot=False):
   """
   Create a morph sequence from source to destination image
 
@@ -109,7 +112,7 @@ def morph(src_img, src_points, dest_img, dest_points,
     src_face = warper.warp_image(src_img, src_points, points, size)
     end_face = warper.warp_image(dest_img, dest_points, points, size)
     average_face = blender.weighted_average(src_face, end_face, percent)
-    average_face = alpha_image(average_face, points) if alpha else average_face
+    average_face = alpha_image(blur_edges, average_face, points) if alpha else average_face
     plt.plot_one(average_face, 'save')
     video.write(average_face)
 
@@ -119,7 +122,7 @@ def morph(src_img, src_points, dest_img, dest_points,
   plt.show()
 
 def morpher(imgpaths, width=500, height=600, num_frames=20, fps=10,
-            out_frames=None, out_video=None, alpha=False, plot=False):
+            out_frames=None, out_video=None, alpha=False, blur_edges=False, plot=False):
   """
   Create a morph sequence from multiple images in imgpaths
 
@@ -130,7 +133,7 @@ def morpher(imgpaths, width=500, height=600, num_frames=20, fps=10,
   src_img, src_points = next(images_points_gen)
   for dest_img, dest_points in images_points_gen:
     morph(src_img, src_points, dest_img, dest_points, video,
-          width, height, num_frames, fps, out_frames, out_video, alpha, plot)
+          width, height, num_frames, fps, out_frames, out_video, alpha, blur_edges, plot)
     src_img, src_points = dest_img, dest_points
   video.end()
 
@@ -142,7 +145,7 @@ def main():
           int(args['--width']), int(args['--height']),
           int(args['--num']), int(args['--fps']),
           args['--out_frames'], args['--out_video'],
-          args['--alpha'], args['--plot'])
+          args['--alpha'], args['--blur_edges'], args['--plot'])
 
 if __name__ == "__main__":
   main()
