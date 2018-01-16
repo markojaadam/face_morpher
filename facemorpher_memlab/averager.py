@@ -4,12 +4,13 @@
   Face averager
 
   Usage:
-    averager.py --images=<images_folder> [--blur] [--alpha] [--plot]
+    averager.py --images=<images_folder> [--background=<bg_path>] [--blur] [--alpha] [--plot]
               [--width=<width>] [--height=<height>] [--out=<filename>] [--destimg=<filename>]
 
   Options:
     -h, --help             Show this screen.
     --images=<folder>      Folder to images (.jpg, .jpeg, .png)
+    --background=<bg_path> Folderpath to background image
     --blur                 Flag to blur edges of image [default: False]
     --alpha                Flag to save with transparent background [default: False]
     --width=<width>        Custom width of the images/video [default: 500]
@@ -55,7 +56,7 @@ def load_image_points(path, size):
   else:
     return aligner.resize_align(img, points, size)
 
-def averager(imgpaths, dest_filename=None, width=500, height=600, alpha=False,
+def averager(imgpaths, dest_filename=None, background=None, width=500, height=600, alpha=False,
              blur_edges=False, out_filename='result.png', plot=False):
 
   size = (height, width)
@@ -96,6 +97,8 @@ def averager(imgpaths, dest_filename=None, width=500, height=600, alpha=False,
     mask = cv2.blur(mask, (blur_radius, blur_radius))
   if alpha:
     dest_img = np.dstack((dest_img, mask))
+  dest_img = blender.add_background(background, dest_img) if background else dest_img
+
   mpimg.imsave(out_filename, dest_img)
 
   if plot:
