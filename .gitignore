@@ -1,3 +1,9 @@
 *.pyc
 *.swp
 MANIFEST
+
+build/
+
+\.idea/
+
+facemorpher_memlab\.egg-info/
