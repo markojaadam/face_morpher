@@ -117,7 +117,8 @@ def poisson_blend(img_source, dest_img, img_mask, offset=(0, 0)):
   return img_target
 
 
-def add_background(background_img, overlay_t_img):
+def add_background(background_img_file, overlay_t_img):
+  background_img = scipy.ndimage.imread(background_img_file, mode='RGB')
   # Resize the background to fit to the image
   h, w = overlay_t_img.shape[:2]
   background_img = cv2.resize(background_img, (w, h))
