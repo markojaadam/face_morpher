@@ -47,7 +47,7 @@ def sharpen(img):
   return cv2.addWeighted(img, 1.4, blured, -0.4, 0)
 
 def load_image_points(path, size):
-  img = scipy.ndimage.imread(path)[..., :3]
+  img = scipy.ndimage.imread(path, mode='RGB')[..., :3]
   points = locator.face_points(path)
 
   if len(points) == 0:
